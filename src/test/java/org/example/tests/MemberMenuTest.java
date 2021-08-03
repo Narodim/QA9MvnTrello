@@ -33,7 +33,7 @@ public class MemberMenuTest extends TestBase{
         log4j.endMethod("MemberMenuTest - InitTest()");
     }
 
-    @Test
+    @Test(groups = {"smoke"})
     public void profileAndVisibilityTabExisting(){
         log4j.startTestCase("profileAndVisibilityTabExisting()");
         Assert.assertEquals(memberMenu.profileAndVisibilityTab(),"Profile and visibility");

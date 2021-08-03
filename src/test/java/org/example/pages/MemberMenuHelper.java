@@ -1,9 +1,13 @@
 package org.example.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import static org.example.tests.TestBase.boardTitle;
+import static org.example.tests.TestBase.listTitle;
 
 public class MemberMenuHelper extends PageBase {
     public String accName;
@@ -24,8 +28,8 @@ public class MemberMenuHelper extends PageBase {
     WebElement activityTab;
     @FindBy(css = ".list-actions")
     WebElement actionLog;
-    @FindBy(xpath = "//*[@class='phenom-desc'][contains(.,'Testovskiy')][contains(.,'added list')]")
-    WebElement actionInLog;
+//    @FindBy(xpath = "//*[@class='phenom-desc'][contains(.,'Testovskiy')][contains(.,'added list')]")
+//    WebElement actionInLog;
 
     public MemberMenuHelper openMenuMember() {
         log4j.startMethod("MemberMenuHelper - openMenuMember()");
@@ -61,6 +65,9 @@ public class MemberMenuHelper extends PageBase {
         activityTab.click();
         log4j.info("wait until 'action log' will be visible");
         waitUntilElementIsVisible(actionLog, 10);
+        WebElement actionInLog = driver.findElement(By.xpath(
+                "//*[@class='phenom-desc'][contains(.,'"+accName+"')][contains(.,'added list')]" +
+                        "[contains(.,'"+listTitle+"')][contains(.,'"+boardTitle+"')]"));
         log4j.endMethod("MemberMenuHelper - activityTab()");
         return actionInLog.getText();
     }

@@ -30,7 +30,7 @@ public class LoginPageHelper extends PageBase{
     WebElement logOut;
     @FindBy(id="logout-submit")
     WebElement submitLogout;
-    @FindBy(xpath = "//div[@class='layout-centered-content']")
+    @FindBy(xpath = "//div/h1[contains(text(),'Thanks for using Trello.')]")
     WebElement logoutMessage;
 
 

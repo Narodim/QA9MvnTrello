@@ -2,6 +2,7 @@ package org.example.tests;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 
 
@@ -35,8 +36,8 @@ public class TestBase {
   public static LogLog4j log4j = new LogLog4j();
   public static String LOGIN = "qa.haifa.9@gmail.com";
   public static String PASSWORD = "MonitorSobaka_19";
-  public static String boardTitle = "Friday";
-  public static String listTitle = "name_first";
+  public static String boardTitle = "Sunday";
+  public static String listTitle = "name_second";
   public static String cardTitle = "text for a card field";
   HomePageHelper homePage;
 
@@ -74,9 +75,9 @@ protected EventFiringWebDriver driver;
     }
   }
 
-  public static void getScreenShot(TakesScreenshot driver){
+  public static void getScreenShot(TakesScreenshot driver, Method method_name){
     File tmp = driver.getScreenshotAs(OutputType.FILE);
-    File screen = new File("shot"+ System.currentTimeMillis() + ".png");
+    File screen = new File(method_name.getName()+"_" + System.currentTimeMillis() + ".png");
     try {
       Files.copy(tmp, screen);
     } catch (IOException e) {
@@ -103,7 +104,7 @@ protected EventFiringWebDriver driver;
     options.addArguments("window-size=2560x1440");
     driver = new EventFiringWebDriver(WebDriverPool.DEFAULT.getDriver(gridHubUrl,options));
     //
-//    driver = new EventFiringWebDriver(WebDriverPool.DEFAULT.getDriver(gridHubUrl, capabilities, options));
+//    driver = new EventFiringWebDriver(WebDriverPool.DEFAULT.getDriver(gridHubUrl, capabilities));
     driver.register(new MyListener());
     driver.manage().window().maximize();
     driver.get(baseUrl);
@@ -117,10 +118,10 @@ protected EventFiringWebDriver driver;
 //  }
 
   @AfterMethod(alwaysRun = true)
-  public void finishTest(ITestResult result){
+  public void finishTest(ITestResult result, Method method_name){
     if(result.getStatus()==ITestResult.FAILURE){
       log4j.error("Test was failure");
-      getScreenShot(driver);
+      getScreenShot(driver, method_name);
     }
   }
 

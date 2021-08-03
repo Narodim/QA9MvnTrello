@@ -31,10 +31,11 @@ public class MemberMenuActivityTabTest extends TestBase {
         log4j.endMethod("MemberMenuActivityTabTest - InitTest()");
     }
 
-    @Test
+    @Test(groups = {"smoke"})
     public void lastActivityInActivityTab(){
         log4j.startTestCase("lastActivityInActivityTab()");
-        Assert.assertEquals(memberMenu.activityTab(), memberMenu.accName + " " + "added list" + " " + listTitle + " " + "to" + " " + boardTitle);
+        Assert.assertEquals(memberMenu.activityTab(), memberMenu.accName + " " + "added list" +
+                " " + listTitle + " " + "to" + " " + boardTitle);
         log4j.endTestCase2();
     }
 }

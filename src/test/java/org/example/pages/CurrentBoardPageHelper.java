@@ -8,6 +8,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
+import static org.example.tests.TestBase.listTitle;
+
 public class CurrentBoardPageHelper extends PageBase{
     String boardTitle;
 
@@ -33,8 +35,10 @@ public class CurrentBoardPageHelper extends PageBase{
     WebElement approveButton;
     @FindBy(xpath = "//button[@data-test-id='create-board-submit-button']")
     WebElement createBoardButton;
-    @FindBy(css = ".js-cancel-edit")
+    @FindBy(css = ".js-cancel")
     WebElement cancelingNewList;
+    @FindBy(css = ".js-cancel-edit")
+    WebElement cancelingEditNewList;
     @FindBy(xpath = "//span[@aria-label='HouseIcon']")
     WebElement houseIcon;
     @FindBy(css = ".js-list-content")
@@ -67,6 +71,8 @@ public class CurrentBoardPageHelper extends PageBase{
     WebElement createList;
     @FindBy(xpath = "//*[@id='board']")
     WebElement boardWithLists;
+    @FindBy(xpath = "//div[@class='card-composer']")
+    WebElement cardFrame;
 
 //    @FindBy(css = ".list-card-title")
 //    List<WebElement> numCards;
@@ -112,12 +118,24 @@ public class CurrentBoardPageHelper extends PageBase{
     public CurrentBoardPageHelper newListCancel(){
         log4j.startMethod("CurrentBoardPageHelper - newListCancel()");
         log4j.info("wait until 'cancel list' button will be clickable");
+        waitUntilElementIsVisible(cardFrame, 10);
         waitUntilElementIsClickable(cancelingNewList, 10);
         log4j.info("click on 'cancel list' button");
         cancelingNewList.click();
         log4j.endMethod("CurrentBoardPageHelper - newListCancel()");
         return this;
 }
+
+    public CurrentBoardPageHelper newListEditCancel(){
+        log4j.startMethod("CurrentBoardPageHelper - newListCancel()");
+        log4j.info("wait until 'cancel list' button will be clickable");
+        waitUntilElementIsClickable(cancelingEditNewList, 10);
+        log4j.info("click on 'cancel list' button");
+        cancelingEditNewList.click();
+        log4j.endMethod("CurrentBoardPageHelper - newListCancel()");
+        return this;
+    }
+
 
      public CurrentBoardPageHelper backToTheBoardsPage() {
          log4j.startMethod("CurrentBoardPageHelper - backToTheBoardsPage()");
@@ -134,7 +152,7 @@ public class CurrentBoardPageHelper extends PageBase{
     public String receivingConfirmFromBoardsPage() {
         log4j.startMethod("CurrentBoardPageHelper - receivingConfirmFromBoardsPage()");
         log4j.info("wait until board name will be clickable");
-        waitUntilElementIsClickable(By.xpath("//*[@class='boards-page-board-section mod-no-sidebar'][contains(.,'Way to success')]//div[@title='"+boardTitle+"']"), 10);
+        waitUntilElementIsClickable(By.xpath("//*[@class='board-tile-details-name'][contains(.,'"+boardTitle+"')]"), 10);
         WebElement newBoardFromRecentlyViewed = driver.findElement
         (By.xpath("//*[@class='boards-page-board-section mod-no-sidebar'][contains(.,'Recently viewed')]//div[@title='"+boardTitle+"']"));
         log4j.info("return name of the added board: " + boardTitle);
@@ -181,32 +199,28 @@ public class CurrentBoardPageHelper extends PageBase{
         log4j.info("wait until number of lists become +1");
         waitUntilElementsBecame(By.cssSelector(".js-list-content"), sizeBefore+1, 10);
             System.out.println("After adding: " + this.listSizeBefore());
-        log4j.info("wait until 'cancel list' button will be clickable");
-        waitUntilElementIsClickable(cancelingNewList, 10);
-        log4j.info("click on 'cancel' button");
-        cancelingNewList.click();
+        log4j.info("wait until 'cancel edit list' button will be clickable");
+        newListEditCancel();
         log4j.info("wait until 'add another list' button will be clickable");
         waitUntilElementIsClickable(addListTab, 10);
         log4j.endMethod("CurrentBoardPageHelper - addNewListParam()");
     }
 
-    public void  addNewList() {
+    public void  addNewList(String name) {
         log4j.startMethod("CurrentBoardPageHelper - addNewList()");
         int sizeBefore = this.listSizeBefore();
         log4j.info("click on 'Add new list' button");
         addListTab.click();
         WebElement listTitleField = listName;
         log4j.info("fill in 'list title' field");
-        listTitleField.sendKeys(listTitle);
+        listTitleField.sendKeys(name);
         log4j.info("click on 'Add list' button");
         addListButton.click();
         log4j.info("wait until number of lists become +1");
         waitUntilElementsBecame(By.cssSelector(".js-list-content"), sizeBefore+1, 10);
         System.out.println("After adding: " + this.listSizeBefore());
-        log4j.info("wait until 'cancel list' button will be clickable");
-        waitUntilElementIsClickable(cancelingNewList, 10);
-        log4j.info("click on 'cancel' button");
-        cancelingNewList.click();
+        log4j.info("wait until 'cancel edit list' button will be clickable");
+        newListEditCancel();
         log4j.info("wait until 'add another list' button will be clickable");
         waitUntilElementIsClickable(addListTab, 10);
         log4j.endMethod("CurrentBoardPageHelper - addNewList()");
@@ -321,7 +335,7 @@ public class CurrentBoardPageHelper extends PageBase{
         nameOfCopy.click();
         nameOfCopy.clear();
         log4j.info("fill in 'title of copy' field");
-        nameOfCopy.sendKeys(listTitle);
+        nameOfCopy.sendKeys("Copy of"+listTitle);
         log4j.info("wait until 'create list' button will be clickable");
         waitUntilElementIsClickable(createList, 10);
         log4j.info("click on 'create list' button");

@@ -29,8 +29,8 @@ public class CurrentBoardTests extends TestBase {
         log4j.endMethod("CurrentBoardTests - InitTest()");
     }
 
-    @Test(dataProviderClass = DataProviders.class, dataProvider = "newBoardCreating")
-    public void newBoardAddParam(String boardName) throws InterruptedException {
+    @Test(priority = 1,dataProviderClass = DataProviders.class, dataProvider = "newBoardCreating",groups = {"smoke"})
+    public void newBoardAddParam(String boardName) {
         log4j.startTestCase("newBoardAddParam(), parameters : board name =" +" " + boardName);
         log4j.info("Add new board with name:" + " " +boardName);
         currentBoardPage
@@ -44,7 +44,7 @@ public class CurrentBoardTests extends TestBase {
 
     }
 
-    @Test(dataProviderClass = DataProviders.class, dataProvider = "newListCreating")
+    @Test(priority = 2,dataProviderClass = DataProviders.class, dataProvider = "newListCreating",groups = {"smoke"})
     public void newListAddParam(String listName){
         log4j.startTestCase("newListAddParam(), parameters : list name =" +" " + listName);
         log4j.info("Choose board with name:" + " " +boardTitle);
@@ -60,15 +60,15 @@ public class CurrentBoardTests extends TestBase {
     }
 
 
-    @Test(dataProviderClass = DataProviders.class, dataProvider = "newCardCreating")
-    public void newCardAddParam(String cardName){
+    @Test(priority = 3,dataProviderClass = DataProviders.class, dataProvider = "newCardCreating",groups = {"smoke"})
+    public void newCardAddParam(String cardName, String name){
         log4j.startTestCase("newCardAddParam(), parameters : card name =" +" " + cardName);
         log4j.info("Choose board with name:" + " " +boardTitle);
         currentBoardPage.chooseBoard();
         int sizeBefore = currentBoardPage.listSizeBefore();
         if(sizeBefore==0){
             currentBoardPage
-                            .addNewList();
+                            .addNewList(name);
         }
         int cardsBefore = currentBoardPage.numCardsBeforeLst();
         log4j.info("Add new list with name:" + " " +cardName);
@@ -80,7 +80,7 @@ public class CurrentBoardTests extends TestBase {
         log4j.endTestCase2();
     }
 
-    @Test
+    @Test(priority = 5,groups = {"smoke"})
     public void listArchive(){
         log4j.startTestCase("listArchive()");
         log4j.info("Choose board with name:" + " " +boardTitle);
@@ -88,7 +88,7 @@ public class CurrentBoardTests extends TestBase {
         int sizeBefore = currentBoardPage.listSizeBefore();
         if(sizeBefore==0){
             currentBoardPage
-                            .addNewList();
+                            .addNewList(listTitle);
             sizeBefore++;
         }
         log4j.info("Archive list with name:" + " " +listTitle);
@@ -99,7 +99,7 @@ public class CurrentBoardTests extends TestBase {
         log4j.endTestCase2();
     }
 
-    @Test
+    @Test(priority = 4,groups = {"smoke"})
     public void listCopy() {
         log4j.startTestCase("listCopy()");
         log4j.info("Choose board with name:" + " " +boardTitle);
@@ -107,10 +107,10 @@ public class CurrentBoardTests extends TestBase {
         int sizeBefore = currentBoardPage.listSizeBefore();
         if(sizeBefore==0){
             currentBoardPage
-                    .addNewList();
+                    .addNewList(listTitle);
             sizeBefore++;
         }
-        log4j.info("Archive list with name:" + " " +listTitle);
+        log4j.info("Copy list with name:" + " " +listTitle);
         currentBoardPage.copyListByName();
         int sizeAfter = currentBoardPage.listSizeBefore();
         Assert.assertEquals(sizeAfter, sizeBefore+1,

@@ -36,7 +36,7 @@ public class HelpPageTest extends TestBase {
         log4j.endMethod("HelpPageTest - initTest()");
     }
 
-    @Test
+    @Test(priority = 1,groups = {"smoke"})
     public void goToHelpPage() {
         log4j.startMethod("HelpPageTest - goToHelpPage()");
         log4j.info("go to the new page");
@@ -46,7 +46,7 @@ public class HelpPageTest extends TestBase {
     }
 
 
-    @Test
+    @Test(priority = 2,groups = {"smoke"})
     public void openHelpPageAndClose() {
         log4j.startMethod("HelpPageTest - openHelpPageAndClose()");
         log4j.info("go to the new page and after close it");
@@ -55,7 +55,7 @@ public class HelpPageTest extends TestBase {
         log4j.endTestCase2();
     }
 
-    @Test
+    @Test(priority = 3,groups = {"smoke"})
     public void returnToHomePageByButton(){
         log4j.startMethod("HelpPageTest - returnToHomePageByButton()");
         log4j.info("go to the new page and after return to the homepage");

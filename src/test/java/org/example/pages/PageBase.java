@@ -11,12 +11,6 @@ public class PageBase {
     WebDriver driver;
 
     public static LogLog4j log4j = new LogLog4j();
-//    public static String LOGINPOSITIVE = "qa.haifa.9@gmail.com";
-//    public static String PASSWORDPOSITIVE = "MonitorSobaka_19";
-//    public static String loginNegative = "Neg" + System.currentTimeMillis() + "@gmail.com";
-//    public static String passwordNegative = "Frgbh9980";
-//    public static String boardTitle = "Trello_test";
-    public static String listTitle = "name_first";
     public static String cardTitle = "text for a card field";
 
 

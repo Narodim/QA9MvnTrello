@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Tests" thread-count="1" parallel="classes" verbose="5">
-  <test name="Smoke testing" enabled="false">
-    <groups>
-      <run>
-        <include name="smoke"/>
-<!--          <exclude name="regression"/>-->
-      </run>
-    </groups>
-    <classes>
-      <class name="org.example.tests.HomePageTest"/>
-      <class name="org.example.tests.MemberMenuActivityTabTest"/>
-      <class name="org.example.tests.LoginTests"/>
-    </classes>
-  </test>
+<suite name="Tests" thread-count="6" parallel="classes" verbose="5">
+<!--  <test name="Smoke testing" enabled="false">-->
+<!--    <groups>-->
+<!--      <run>-->
+<!--        <include name="smoke"/>-->
+<!--&lt;!&ndash;          <exclude name="regression"/>&ndash;&gt;-->
+<!--      </run>-->
+<!--    </groups>-->
+<!--    <classes>-->
+<!--      <class name="org.example.tests.HomePageTest"/>-->
+<!--      <class name="org.example.tests.MemberMenuActivityTabTest"/>-->
+<!--      <class name="org.example.tests.LoginTests"/>-->
+<!--    </classes>-->
+<!--  </test>-->
   <test name="Smoke testing without regression" enabled="true">
     <groups>
       <run>
@@ -22,9 +22,12 @@
       </run>
     </groups>
     <classes>
+      <class name="org.example.tests.CurrentBoardTests"/>
       <class name="org.example.tests.HomePageTest"/>
-      <class name="org.example.tests.MemberMenuActivityTabTest"/>
+      <class name="org.example.tests.HelpPageTest"/>
       <class name="org.example.tests.LoginTests"/>
+      <class name="org.example.tests.MemberMenuActivityTabTest"/>
+      <class name="org.example.tests.MemberMenuTest"/>
     </classes>
   </test>
 </suite>

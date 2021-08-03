@@ -25,7 +25,7 @@ public class LoginTests extends TestBase {
         log4j.endMethod("LoginTests - initTest()");
     }
 
-    @Test(groups = {"system"},dataProviderClass = DataProviders.class,dataProvider = "negativeLoginWithoutRandom")
+    @Test(groups = {"system","smoke"},dataProviderClass = DataProviders.class,dataProvider = "negativeLoginWithoutRandom")
     public void negativeLoginParam(String login, String password, String errorMassage) {
         log4j.startTestCase("negativeLoginParam(), parameters: login = " + " "
                 + login + " " + "password = " + " " +password + " " + "error massage =" + " " + errorMassage);
@@ -37,7 +37,7 @@ public class LoginTests extends TestBase {
 
     }
 
-    @Test(dataProviderClass = DataProviders.class,dataProvider = "negativeLoginWithRandom2")
+    @Test(dataProviderClass = DataProviders.class,dataProvider = "negativeLoginWithRandom2",groups = {"smoke"})
     public void negativeLoginParamRandom(String login, String password) {
         log4j.startTestCase("negativeLoginParamRandom(), parameters: login = " + " "
                 + login + " " + "password = " + " " +password);
@@ -60,8 +60,7 @@ public class LoginTests extends TestBase {
         loginPage
                 .logoutFromAccount()
                 .logoutSubmit();
-        Assert.assertEquals(loginPage.receivingConfirm(), "Thanks for using Trello." +
-                "\nYou’re all logged out. So now what?","Troubles with assert");
+        Assert.assertEquals(loginPage.receivingConfirm(), "Thanks for using Trello.","There was no logout");
         log4j.endTestCase2();
     }
 }
