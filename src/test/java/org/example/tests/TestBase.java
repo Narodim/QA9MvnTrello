@@ -1,14 +1,21 @@
 package org.example.tests;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+
+import com.google.common.io.Files;
 import org.example.SuiteConfiguration;
 import org.example.pages.HomePageHelper;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.Capabilities;
+import org.example.util.LogLog4j;
+import org.openqa.selenium.*;
 
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
@@ -24,6 +31,8 @@ public class TestBase {
   protected static URL gridHubUrl = null;
   protected static String baseUrl;
   protected static Capabilities capabilities;
+
+  public static LogLog4j log4j = new LogLog4j();
   public static String LOGIN = "qa.haifa.9@gmail.com";
   public static String PASSWORD = "MonitorSobaka_19";
   public static String boardTitle = "Friday";
@@ -31,9 +40,52 @@ public class TestBase {
   public static String cardTitle = "text for a card field";
   HomePageHelper homePage;
 
-  protected WebDriver driver;
+//  protected WebDriver driver;
+protected EventFiringWebDriver driver;
+  public static class MyListener extends AbstractWebDriverEventListener {
+    @Override
+    public void beforeFindBy(By by, WebElement element, WebDriver driver) {
+      log4j.info("Element has to be found: " + by);
+    }
+    @Override
+    public void afterFindBy(By by, WebElement element, WebDriver driver) {
+      log4j.info("Element was found: " + by);
+    }
+    @Override
+    public void onException(Throwable throwable, WebDriver driver) {
+      log4j.error("Error - " + throwable);
+//      getScreenShot((TakesScreenshot)driver);
+    }
+    @Override
+    public void beforeSwitchToWindow(String windowName, WebDriver driver) {
+      log4j.info("Window before switch: " + windowName);
+    }
+    @Override
+    public void afterSwitchToWindow(String windowName, WebDriver driver) {
+      log4j.info("Window after switch: " + windowName);
+    }
+    @Override
+    public void beforeClickOn(WebElement element, WebDriver driver) {
+      log4j.info("Element has to be clicked: " + element);
+    }
+    @Override
+    public void afterClickOn(WebElement element, WebDriver driver) {
+      log4j.info("Element was clicked: " + element);
+    }
+  }
 
-  @BeforeSuite
+  public static void getScreenShot(TakesScreenshot driver){
+    File tmp = driver.getScreenshotAs(OutputType.FILE);
+    File screen = new File("shot"+ System.currentTimeMillis() + ".png");
+    try {
+      Files.copy(tmp, screen);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    log4j.info("See screenshot :" + screen);
+  }
+
+  @BeforeSuite(alwaysRun = true)
   public void initTestSuite() throws IOException {
     SuiteConfiguration config = new SuiteConfiguration();
     baseUrl = config.getProperty("site.url");
@@ -43,9 +95,17 @@ public class TestBase {
     capabilities = config.getCapabilities();
   }
 
-  @BeforeMethod
+  @BeforeMethod(alwaysRun = true)
   public void initWebDriver() {
-    driver = WebDriverPool.DEFAULT.getDriver(gridHubUrl, capabilities);
+    //enable headless mod(work without gpu)
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("headless");
+    options.addArguments("window-size=2560x1440");
+    driver = new EventFiringWebDriver(WebDriverPool.DEFAULT.getDriver(gridHubUrl,options));
+    //
+//    driver = new EventFiringWebDriver(WebDriverPool.DEFAULT.getDriver(gridHubUrl, capabilities, options));
+    driver.register(new MyListener());
+    driver.manage().window().maximize();
     driver.get(baseUrl);
     homePage = PageFactory.initElements(driver, HomePageHelper .class);
     homePage.waitUntilPageIsLoaded();
@@ -55,6 +115,15 @@ public class TestBase {
 //  public void tearDown() {
 //    WebDriverPool.DEFAULT.dismissAll();
 //  }
+
+  @AfterMethod(alwaysRun = true)
+  public void finishTest(ITestResult result){
+    if(result.getStatus()==ITestResult.FAILURE){
+      log4j.error("Test was failure");
+      getScreenShot(driver);
+    }
+  }
+
   @AfterMethod(alwaysRun = true)
   public void tearDown() {
     driver.quit();

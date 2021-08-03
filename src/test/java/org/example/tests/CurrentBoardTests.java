@@ -15,43 +15,55 @@ public class CurrentBoardTests extends TestBase {
     CurrentBoardPageHelper currentBoardPage;
 
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void initTest() {
         homePage = PageFactory.initElements(driver, HomePageHelper.class);
         loginPage = PageFactory.initElements(driver, LoginPageHelper.class);
         currentBoardPage = new CurrentBoardPageHelper(driver, boardTitle);
-
+        log4j.startMethod("CurrentBoardTests - InitTest()");
         homePage.waitUntilPageIsLoaded();
         loginPage
                 .openPage()
                 .waitUntilPageIsLoaded()
                 .logInWithAttl(LOGIN, PASSWORD);
+        log4j.endMethod("CurrentBoardTests - InitTest()");
     }
 
     @Test(dataProviderClass = DataProviders.class, dataProvider = "newBoardCreating")
     public void newBoardAddParam(String boardName) throws InterruptedException {
+        log4j.startTestCase("newBoardAddParam(), parameters : board name =" +" " + boardName);
+        log4j.info("Add new board with name:" + " " +boardName);
         currentBoardPage
                         .createNewBoard(boardName)
                         .backToTheBoardsPage();
+        log4j.info("Assert: message has to be: "+boardTitle);
         Assert.assertEquals(
                 boardTitle,currentBoardPage.receivingConfirmFromBoardsPage(),
                 "Ne igraisya s kostilyami");
+        log4j.endTestCase2();
 
     }
 
     @Test(dataProviderClass = DataProviders.class, dataProvider = "newListCreating")
     public void newListAddParam(String listName){
+        log4j.startTestCase("newListAddParam(), parameters : list name =" +" " + listName);
+        log4j.info("Choose board with name:" + " " +boardTitle);
         currentBoardPage.chooseBoard();
         int sizeBefore = currentBoardPage.listSizeBefore();
+        log4j.info("Add new list with name:" + " " +listName);
         currentBoardPage.addNewListParam(listName);
         int sizeAfter = currentBoardPage.listSizeBefore();
+        log4j.info("Assert: number of lists has to be: "+sizeBefore+1);
         Assert.assertEquals(sizeAfter, sizeBefore+1,
                 "Something wrong with adding new list");
+        log4j.endTestCase2();
     }
 
 
     @Test(dataProviderClass = DataProviders.class, dataProvider = "newCardCreating")
     public void newCardAddParam(String cardName){
+        log4j.startTestCase("newCardAddParam(), parameters : card name =" +" " + cardName);
+        log4j.info("Choose board with name:" + " " +boardTitle);
         currentBoardPage.chooseBoard();
         int sizeBefore = currentBoardPage.listSizeBefore();
         if(sizeBefore==0){
@@ -59,14 +71,19 @@ public class CurrentBoardTests extends TestBase {
                             .addNewList();
         }
         int cardsBefore = currentBoardPage.numCardsBeforeLst();
+        log4j.info("Add new list with name:" + " " +cardName);
         currentBoardPage.addCardByListName(cardName);
         int cardsAfter = currentBoardPage.numCardsBeforeLst();
+        log4j.info("Assert: number of cards has to be: "+cardsBefore+1);
         Assert.assertEquals(cardsAfter, cardsBefore+1,
                 "Something wrong with adding new card");
+        log4j.endTestCase2();
     }
 
     @Test
     public void listArchive(){
+        log4j.startTestCase("listArchive()");
+        log4j.info("Choose board with name:" + " " +boardTitle);
         currentBoardPage.chooseBoard();
         int sizeBefore = currentBoardPage.listSizeBefore();
         if(sizeBefore==0){
@@ -74,14 +91,18 @@ public class CurrentBoardTests extends TestBase {
                             .addNewList();
             sizeBefore++;
         }
+        log4j.info("Archive list with name:" + " " +listTitle);
         currentBoardPage.listArchiveByName();
         int sizeAfter = currentBoardPage.listSizeBefore();
         Assert.assertEquals(sizeBefore-1, sizeAfter,
                 "na etom nashi polnomochiya fsyo");
+        log4j.endTestCase2();
     }
 
     @Test
     public void listCopy() {
+        log4j.startTestCase("listCopy()");
+        log4j.info("Choose board with name:" + " " +boardTitle);
         currentBoardPage.chooseBoard();
         int sizeBefore = currentBoardPage.listSizeBefore();
         if(sizeBefore==0){
@@ -89,10 +110,12 @@ public class CurrentBoardTests extends TestBase {
                     .addNewList();
             sizeBefore++;
         }
+        log4j.info("Archive list with name:" + " " +listTitle);
         currentBoardPage.copyListByName();
         int sizeAfter = currentBoardPage.listSizeBefore();
         Assert.assertEquals(sizeAfter, sizeBefore+1,
                 "List wasn't copy");
+        log4j.endTestCase2();
     }
 
 

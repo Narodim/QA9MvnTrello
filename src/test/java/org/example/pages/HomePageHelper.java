@@ -15,11 +15,14 @@ public class HomePageHelper extends PageBase {
 
     public void waitUntilPageIsLoaded() {
 //        waitUntilElementIsClickable(By.cssSelector(".text-primary"), 40);
+        log4j.startMethod("HomePageHelper() - waitUntilPageIsLoaded");
         waitUntilElementIsClickable(logInIcon,40);
+        log4j.endMethod("HomePageHelper() - waitUntilPageIsLoaded");
     }
 
     public boolean isCorrectPage(){
         //return driver.findElement(By.cssSelector(".text-primary")).getText().equals("Log in");
+        log4j.startMethod("HomePageHelper() - isCorrectPage");
         return logInIcon.getText().equals("Log in");
     }
 }

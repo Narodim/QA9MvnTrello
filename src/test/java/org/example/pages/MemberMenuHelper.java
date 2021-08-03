@@ -28,26 +28,40 @@ public class MemberMenuHelper extends PageBase {
     WebElement actionInLog;
 
     public MemberMenuHelper openMenuMember() {
+        log4j.startMethod("MemberMenuHelper - openMenuMember()");
+        log4j.info("wait until 'member menu' button will be clickable");
         waitUntilElementIsClickable(openMemberMenu, 10);
+        log4j.info("click on menu");
         openMemberMenu.click();
+        log4j.endMethod("MemberMenuHelper - openMenuMember()");
         return this;
-       }
+    }
 
 
     public MemberMenuHelper waitUntilPageIsLoaded() {
+        log4j.startMethod("MemberMenuHelper - waitUntilPageIsLoaded()");
+        log4j.info("wait until 'member menu' frame will be visible");
         waitUntilElementIsVisible(memberMenuPopover, 10);
+        log4j.endMethod("MemberMenuHelper - waitUntilPageIsLoaded()");
         return this;
     }
 
     public String profileAndVisibilityTab() {
+        log4j.startMethod("MemberMenuHelper - profileAndVisibilityTab()");
+        log4j.info("wait until 'profile and visibility' tab will be visible");
+        log4j.endMethod("MemberMenuHelper - profileAndVisibilityTab()");
         return profileAndVisibilityTab.getText();
     }
 
 
     public String activityTab() {
+        log4j.startMethod("MemberMenuHelper - activityTab()");
         accName = accountName.getText();
+        log4j.info("click on 'activity' tab");
         activityTab.click();
+        log4j.info("wait until 'action log' will be visible");
         waitUntilElementIsVisible(actionLog, 10);
+        log4j.endMethod("MemberMenuHelper - activityTab()");
         return actionInLog.getText();
     }
 }

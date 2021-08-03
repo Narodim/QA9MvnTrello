@@ -15,14 +15,14 @@ public class HelpPageTest extends TestBase {
     MemberMenuHelper memberMenu;
     HelpPageHelper helpPage;
 
-    @BeforeMethod
-    public void initTest() throws InterruptedException {
+    @BeforeMethod(alwaysRun = true)
+    public void initTest(){
         homePage = PageFactory.initElements(driver, HomePageHelper.class);
         loginPage = PageFactory.initElements(driver, LoginPageHelper.class);
         currentBoardPage = new CurrentBoardPageHelper(driver, boardTitle);
         memberMenu = PageFactory.initElements(driver, MemberMenuHelper.class);
         helpPage = PageFactory.initElements(driver, HelpPageHelper.class);
-
+        log4j.startMethod("HelpPageTest - initTest()");
         homePage.waitUntilPageIsLoaded();
         loginPage
                 .openPage()
@@ -33,18 +33,35 @@ public class HelpPageTest extends TestBase {
                 .waitUntilPageIsLoaded();
         helpPage
                 .openHelpPage();
+        log4j.endMethod("HelpPageTest - initTest()");
     }
 
     @Test
-    public void openAndCloseHelpPage() {
+    public void goToHelpPage() {
+        log4j.startMethod("HelpPageTest - goToHelpPage()");
+        log4j.info("go to the new page");
+        helpPage.openAndCloseNewPage();
+        Assert.assertEquals(textFromHelpPage, "Get help with Trello","New page wasn't reached");
+        log4j.endTestCase2();
+    }
+
+
+    @Test
+    public void openHelpPageAndClose() {
+        log4j.startMethod("HelpPageTest - openHelpPageAndClose()");
+        log4j.info("go to the new page and after close it");
         helpPage.closeSecondPage();
-        Assert.assertEquals(firstPageKey, firstPageKeyAfterSwitching);
+        Assert.assertEquals(textHomePageBefore, textHomePageAfter);
+        log4j.endTestCase2();
     }
 
     @Test
-    public void openHelpPageAndReturn() {
+    public void returnToHomePageByButton(){
+        log4j.startMethod("HelpPageTest - returnToHomePageByButton()");
+        log4j.info("go to the new page and after return to the homepage");
         helpPage.returningToTheHomepage();
-        Assert.assertEquals(secondPageKey, secondPageKeyAfter);
+        Assert.assertEquals(textHomePageBefore, textHomePageAfter);
+        log4j.endTestCase2();
     }
 
 }

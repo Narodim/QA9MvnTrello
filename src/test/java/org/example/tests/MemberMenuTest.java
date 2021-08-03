@@ -15,13 +15,13 @@ public class MemberMenuTest extends TestBase{
     CurrentBoardPageHelper currentBoardPage;
     MemberMenuHelper memberMenu;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void initTest() {
         homePage = PageFactory.initElements(driver, HomePageHelper.class);
         loginPage = PageFactory.initElements(driver, LoginPageHelper.class);
         currentBoardPage = new CurrentBoardPageHelper(driver, boardTitle);
         memberMenu = PageFactory.initElements(driver, MemberMenuHelper.class);
-
+        log4j.startMethod("MemberMenuTest - InitTest()");
         homePage.waitUntilPageIsLoaded();
         loginPage
                 .openPage()
@@ -30,11 +30,14 @@ public class MemberMenuTest extends TestBase{
         memberMenu
                 .openMenuMember()
                 .waitUntilPageIsLoaded();
+        log4j.endMethod("MemberMenuTest - InitTest()");
     }
 
     @Test
     public void profileAndVisibilityTabExisting(){
+        log4j.startTestCase("profileAndVisibilityTabExisting()");
         Assert.assertEquals(memberMenu.profileAndVisibilityTab(),"Profile and visibility");
+        log4j.endTestCase2();
     }
 
 

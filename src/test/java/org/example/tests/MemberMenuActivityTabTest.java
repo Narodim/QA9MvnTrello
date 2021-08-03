@@ -14,12 +14,12 @@ public class MemberMenuActivityTabTest extends TestBase {
     LoginPageHelper loginPage;
     MemberMenuHelper memberMenu;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void InitTest(){
         homePage = PageFactory.initElements(driver, HomePageHelper.class);
         loginPage = PageFactory.initElements(driver, LoginPageHelper.class);
         memberMenu = PageFactory.initElements(driver, MemberMenuHelper.class);
-
+        log4j.startMethod("MemberMenuActivityTabTest - InitTest()");
         homePage.waitUntilPageIsLoaded();
         loginPage
                 .openPage()
@@ -28,10 +28,13 @@ public class MemberMenuActivityTabTest extends TestBase {
         memberMenu
                 .openMenuMember()
                 .waitUntilPageIsLoaded();
+        log4j.endMethod("MemberMenuActivityTabTest - InitTest()");
     }
 
     @Test
     public void lastActivityInActivityTab(){
+        log4j.startTestCase("lastActivityInActivityTab()");
         Assert.assertEquals(memberMenu.activityTab(), memberMenu.accName + " " + "added list" + " " + listTitle + " " + "to" + " " + boardTitle);
+        log4j.endTestCase2();
     }
 }

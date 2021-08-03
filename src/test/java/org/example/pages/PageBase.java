@@ -1,5 +1,6 @@
 package org.example.pages;
 
+import org.example.util.LogLog4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,6 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class PageBase {
     WebDriver driver;
+
+    public static LogLog4j log4j = new LogLog4j();
 //    public static String LOGINPOSITIVE = "qa.haifa.9@gmail.com";
 //    public static String PASSWORDPOSITIVE = "MonitorSobaka_19";
 //    public static String loginNegative = "Neg" + System.currentTimeMillis() + "@gmail.com";
@@ -20,6 +23,10 @@ public class PageBase {
     public void clickAndFielding(WebElement field, String value) {
         field.click();
         field.sendKeys(value);
+    }
+
+    public void newWindowOpen(Integer quantity, Integer time){
+        waitUntilNumberOfWindowsToBe(quantity, time);
     }
 
     public void waitUntilElementIsClickable(By locator, int time) {
@@ -82,6 +89,14 @@ public class PageBase {
     public void waitUntilElementsBecame(By locator, int quantity, int time) {
         try {
             new WebDriverWait(driver, time).until(ExpectedConditions.numberOfElementsToBe(locator,quantity));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void waitUntilNumberOfWindowsToBe(int quantity, int time) {
+        try {
+            new WebDriverWait(driver, time).until(ExpectedConditions.numberOfWindowsToBe(quantity));
         } catch (Exception e) {
             e.printStackTrace();
         }

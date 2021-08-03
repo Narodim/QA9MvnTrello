@@ -73,43 +73,72 @@ public class CurrentBoardPageHelper extends PageBase{
 
 
 //===============================================CREATE NEW BOARD=======================================================
-    public CurrentBoardPageHelper createNewBoard(String boardName) throws InterruptedException {
+    public CurrentBoardPageHelper createNewBoard(String boardName){
+        log4j.startMethod("CurrentBoardPageHelper - createNewBoard()");
+        log4j.info("wait until list of all boards will be loaded");
         waitUntilElementIsVisible(allBoardsPresent, 10);
+        log4j.info("click on 'add new board' button");
         addNewBoard.click();
+        log4j.info("wait until new board title will be clickable");
         waitUntilElementIsClickable(newBoardTitle, 10);
+        log4j.info("filling board title and click: " + boardName);
         clickAndFielding(newBoardTitle, boardName);
+        log4j.info("wait until background will be clickable");
         waitUntilElementIsClickable(backgroundImage, 10);
+        log4j.info("choose background image and click");
         backgroundImage.click();
+        log4j.info("wait until type of access menu will be clickable");
         waitUntilElementIsClickable(dropDownMenuOfAccess, 10);
+        log4j.info("click on menu");
         dropDownMenuOfAccess.click();
+        log4j.info("wait until type of access will be clickable");
         waitUntilElementIsClickable(typeOfAccess, 10);
+        log4j.info("choose type of access and click");
         typeOfAccess.click();
+        log4j.info("wait until approve button will be clickable");
         waitUntilElementIsClickable(approveButton, 10);
+        log4j.info("click on approve button");
         approveButton.click();
+        log4j.info("wait until create board button will be clickable");
         waitUntilElementIsClickable(createBoardButton, 10);
+        log4j.info("click on create board button");
         createBoardButton.click();
+        log4j.info("cancel of new list adding");
         newListCancel();
+        log4j.endMethod("CurrentBoardPageHelper - createNewBoard()");
         return this;
     }
 
-    public CurrentBoardPageHelper newListCancel() throws InterruptedException {
+    public CurrentBoardPageHelper newListCancel(){
+        log4j.startMethod("CurrentBoardPageHelper - newListCancel()");
+        log4j.info("wait until 'cancel list' button will be clickable");
         waitUntilElementIsClickable(cancelingNewList, 10);
-        Thread.sleep(3000);
+        log4j.info("click on 'cancel list' button");
         cancelingNewList.click();
+        log4j.endMethod("CurrentBoardPageHelper - newListCancel()");
         return this;
 }
 
      public CurrentBoardPageHelper backToTheBoardsPage() {
-        waitUntilElementIsVisible(allListsPresent, 10);
-        waitUntilElementIsVisible(houseIcon,10);
-        houseIcon.click();
+         log4j.startMethod("CurrentBoardPageHelper - backToTheBoardsPage()");
+         log4j.info("wait until all list will be present");
+         waitUntilElementIsVisible(allListsPresent, 10);
+         log4j.info("wait until house icon will be clickable");
+         waitUntilElementIsClickable(houseIcon,10);
+         log4j.info("click on house icon");
+         houseIcon.click();
+         log4j.endMethod("CurrentBoardPageHelper - backToTheBoardsPage()");
         return this;
     }
 
     public String receivingConfirmFromBoardsPage() {
+        log4j.startMethod("CurrentBoardPageHelper - receivingConfirmFromBoardsPage()");
+        log4j.info("wait until board name will be clickable");
         waitUntilElementIsClickable(By.xpath("//*[@class='boards-page-board-section mod-no-sidebar'][contains(.,'Way to success')]//div[@title='"+boardTitle+"']"), 10);
         WebElement newBoardFromRecentlyViewed = driver.findElement
         (By.xpath("//*[@class='boards-page-board-section mod-no-sidebar'][contains(.,'Recently viewed')]//div[@title='"+boardTitle+"']"));
+        log4j.info("return name of the added board: " + boardTitle);
+        log4j.endMethod("CurrentBoardPageHelper - receivingConfirmFromBoardsPage()");
         return newBoardFromRecentlyViewed.getText();
     }
 
@@ -125,60 +154,95 @@ public class CurrentBoardPageHelper extends PageBase{
     }
 
     public CurrentBoardPageHelper chooseBoard() {
+        log4j.startMethod("CurrentBoardPageHelper - chooseBoard()");
+        log4j.info("wait until all boards will be visible");
         waitUntilElementIsVisible(allBoardsPresent, 10);
+        log4j.info("choose board by name:" + boardTitle);
         WebElement chooseBoard = driver.findElement(By.xpath("//div[@title='"+boardTitle+"']"));
+        log4j.info("click on board");
         chooseBoard.click();
+        log4j.info("wait until all list board will be visible");
         waitUntilElementIsVisible(boardWithLists, 10);
+        log4j.endMethod("CurrentBoardPageHelper - chooseBoard()");
         return this;
     }
 
 
     public void  addNewListParam(String name) {
+        log4j.startMethod("CurrentBoardPageHelper - addNewListParam()");
         int sizeBefore = this.listSizeBefore();
+        log4j.info("click on 'Add new list' button");
         addListTab.click();
         WebElement listTitleField = listName;
+        log4j.info("fill in 'list title' field");
         listTitleField.sendKeys(name);
+        log4j.info("click on 'Add list' button");
         addListButton.click();
+        log4j.info("wait until number of lists become +1");
         waitUntilElementsBecame(By.cssSelector(".js-list-content"), sizeBefore+1, 10);
             System.out.println("After adding: " + this.listSizeBefore());
+        log4j.info("wait until 'cancel list' button will be clickable");
         waitUntilElementIsClickable(cancelingNewList, 10);
+        log4j.info("click on 'cancel' button");
         cancelingNewList.click();
+        log4j.info("wait until 'add another list' button will be clickable");
         waitUntilElementIsClickable(addListTab, 10);
-
+        log4j.endMethod("CurrentBoardPageHelper - addNewListParam()");
     }
 
     public void  addNewList() {
+        log4j.startMethod("CurrentBoardPageHelper - addNewList()");
         int sizeBefore = this.listSizeBefore();
+        log4j.info("click on 'Add new list' button");
         addListTab.click();
         WebElement listTitleField = listName;
+        log4j.info("fill in 'list title' field");
         listTitleField.sendKeys(listTitle);
+        log4j.info("click on 'Add list' button");
         addListButton.click();
+        log4j.info("wait until number of lists become +1");
         waitUntilElementsBecame(By.cssSelector(".js-list-content"), sizeBefore+1, 10);
         System.out.println("After adding: " + this.listSizeBefore());
+        log4j.info("wait until 'cancel list' button will be clickable");
         waitUntilElementIsClickable(cancelingNewList, 10);
+        log4j.info("click on 'cancel' button");
         cancelingNewList.click();
+        log4j.info("wait until 'add another list' button will be clickable");
         waitUntilElementIsClickable(addListTab, 10);
-
+        log4j.endMethod("CurrentBoardPageHelper - addNewList()");
     }
 
 
     //======================================================ADD NEW CARD BY LIST NAME==================================================
 
     public void addCardByListName(String cardName) {
+        log4j.startMethod("CurrentBoardPageHelper - addCardByListName()");
         int cardsBefore = this.numCardsBeforeLst();
         WebElement listActionButton = driver.findElement
         (By.xpath("//*[@class='list js-list-content'][.//*[contains(.,'"+listTitle+"')]]//*[@class='list-header-extras']"));
+        log4j.info("click on 'list actions' menu");
         listActionButton.click();
+        log4j.info("wait until 'list actions' menu weill be visible");
         waitUntilElementIsVisible(listActionsMenu, 10);
+        log4j.info("wait until 'Add card' button weill be clickable");
         waitUntilElementIsClickable(addCard,10);
+        log4j.info("click on 'Add card' button");
         addCard.click();
+        log4j.info("wait until card title will be clickable");
         waitUntilElementIsClickable(addCardTitle, 10);
+        log4j.info("fill in 'card title' field");
         addCardTitle.sendKeys(cardName);
+        log4j.info("wait until 'Add card' button will be clickable");
         waitUntilElementIsClickable(confirmButtonBorAddCard, 10);
+        log4j.info("click on 'Add card' button");
         confirmButtonBorAddCard.click();
+        log4j.info("wait until number of cards become +1");
         waitUntilElementsBecame(By.cssSelector(".list-card-title"),cardsBefore+1, 10 );
+        log4j.info("wait until 'cancel card' button will be clickable");
         waitUntilElementIsClickable(cancelNewCard, 10);
+        log4j.info("click on 'cancel' button");
         cancelNewCard.click();
+        log4j.endMethod("CurrentBoardPageHelper - addCardByListName()");
     }
 
     public int  numCardsBeforeLst(){
@@ -219,37 +283,50 @@ public class CurrentBoardPageHelper extends PageBase{
 //            }
 //        }
 //    }
+
 //==============================================ARCHIVE LIST BY NAME===============================================================
 
 
     public void listArchiveByName() {
+        log4j.startMethod("CurrentBoardPageHelper - listArchiveByName()");
+        log4j.info("wait until all lists in card will be present");
         waitUntilElementIsVisible(allListsPresent, 10);
         WebElement listActionButton = driver.findElement
         (By.xpath("//*[@class='list js-list-content'][.//*[contains(.,'"+listTitle+"')]]//*[@class='list-header-extras']"));
+        log4j.info("click on 'list actions' menu");
         listActionButton.click();
+        log4j.info("wait until 'Archive this list' button weill be clickable");
         waitUntilElementIsClickable(archiveList, 10);
+        log4j.info("click on 'Archive this list' button");
         archiveList.click();
+        log4j.info("wait until 'add another list' button will be clickable");
         waitUntilElementIsVisible(addListTab, 10);
+        log4j.endMethod("CurrentBoardPageHelper - listArchiveByName()");
     }
-
-
-
-
 //=================================================COPY LIST BY NAME===============================================================
 
 
     public void copyListByName() {
+        log4j.startMethod("CurrentBoardPageHelper - copyListByName()");
         WebElement listActionButton = driver.findElement
         (By.xpath("//*[@class='list js-list-content'][.//*[contains(.,'"+listTitle+"')]]//*[@class='list-header-extras']"));
+        log4j.info("click on 'list actions' menu");
         listActionButton.click();
+        log4j.info("wait until 'Copy list' button weill be clickable");
         waitUntilElementIsClickable(copyList, 10);
+        log4j.info("click on 'Copy list' button");
         copyList.click();
+        log4j.info("wait until 'title of copy' field weill be clickable");
         waitUntilElementIsClickable(nameOfCopy, 10);
         nameOfCopy.click();
         nameOfCopy.clear();
+        log4j.info("fill in 'title of copy' field");
         nameOfCopy.sendKeys(listTitle);
+        log4j.info("wait until 'create list' button will be clickable");
         waitUntilElementIsClickable(createList, 10);
+        log4j.info("click on 'create list' button");
         createList.click();
+        log4j.endMethod("CurrentBoardPageHelper - copyListByName()");
     }
 
 }
